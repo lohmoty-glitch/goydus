@@ -1,54 +1,79 @@
+import os
+
+# Получаем переменные из окружения
 api_id = os.environ.get('API_ID')
 api_hash = os.environ.get('API_HASH')
 bot_token = os.environ.get('BOT_TOKEN')
 admin_chat_ids = os.environ.get('ADMIN_CHAT_IDS', '').split(',')
 CRYPTO_PAY_TOKEN = os.environ.get('CRYPTO_PAY_TOKEN')
 
+# Проверяем наличие обязательных переменных
+if not api_id or not api_hash or not bot_token:
+    raise ValueError("Не установлены обязательные переменные окружения: API_ID, API_HASH, BOT_TOKEN")
+
+# Преобразуем типы
+try:
+    api_id = int(api_id)
+except ValueError:
+    pass
+
+# Словарь отправителей (email: password)
 senders = {
     "huyznaet06@gmail.com": "cyeb pnyi ctpj xxdx",
     "alabuga793@gmail.com": "tzuk rehw syaw ozme",
-    
-"dlatt6677@gmail.com": "usun ruef otzx zcrh",
-"edittendo0@gmail.com": "mzdl lrmx puyq epur",
-"shshsbsbsbwbwvw@gmail.com": "jqrx qivo qxjy jejt",
-"IvanKarma2000@gmail.com": "irlr cggo xksq tlbb",
-"misha28272727@gmail.com": "kgwqxvkgjyccibkm",
-"vladimiradmiralov664@gmail.com": "papq hkip geao rkuz",
-"trevorzxasuniga214@gmail.com": "egnr eucw jvxg jatq",
-"dellapreston50@gmail.com": "qoit huon rzsd eewo",
-"neilfdhioley765@gmail.com": "rgco uwiy qrdc gvqh",
-"samuelmnjassey32@gmail.com": "lgct cjiw nufr zxjg",
-"segapro72@gmail.com": "ubmq pbrt ujqy orhf",
-"kurokopotok@gmail.com": "pxww ewut uffz ufpu",
-"kalievutub@gmail.com": "jlwb otxo mppi jvdh",
-"snosakka07@gmail.com": "yiro khva gafc lujr",
-"prosega211@gmail.com": "fnrz rkrp nrwy yaig",
-"qwaerlarp@gmail.com": "zrzx siyf ukvm ctjp",
-"segatel093@gmail.com": "fsma qetz gvmp pqrm",
-"irina15815123@gmail.com": "fmre mxne ncaw gnke",
-"disgeugh482@gmail.com": "ufet dwko fadg crax",
-"germanalexandrovich12345678@gmail.com": "tsln hvmz mipp kmwh",
-"bl89222099674@gmail.com": "yjru yftj zihu nyrz",
-"psega0892@gmail.com": "vhrr hiso npgm xnoi",
-"noakk1843@gmail.com": "mvqo rfrv cjht vppo",
-"mak091ov@gmail.com": "hhli muyx nqju wlkk",
-"ilya228smirn0@gmail.com": "faex guxl rlsx tvyc",
-"demidivivan548@gmail.com": "izky pqsm xmxk vgod",
-"zedrenskijvitalij@gmail.com": "javb kkcu znxe ykdj",
-"tatanamorinskaa@gmail.com": "cjig kaxt tijl ndre",
-"ivanplutalov543@gmail.com": "xsvm ewki dhfz qqkh",
-"editt1345@gmail.com": "hezf xuel hzvz jzur",
-"dlatt7055@gmail.com": "tpzd nxle odaw uqwf",
-"dlyabravla655@gmail.com": "kprn ihvr bgia vdys",
-"allisonikse1922@gmail.com": "tozo xrzu qndn mwuq"
+    "dlatt6677@gmail.com": "usun ruef otzx zcrh",
+    "edittendo0@gmail.com": "mzdl lrmx puyq epur",
+    "shshsbsbsbwbwvw@gmail.com": "jqrx qivo qxjy jejt",
+    "IvanKarma2000@gmail.com": "irlr cggo xksq tlbb",
+    "misha28272727@gmail.com": "kgwqxvkgjyccibkm",
+    "vladimiradmiralov664@gmail.com": "papq hkip geao rkuz",
+    "trevorzxasuniga214@gmail.com": "egnr eucw jvxg jatq",
+    "dellapreston50@gmail.com": "qoit huon rzsd eewo",
+    "neilfdhioley765@gmail.com": "rgco uwiy qrdc gvqh",
+    "samuelmnjassey32@gmail.com": "lgct cjiw nufr zxjg",
+    "segapro72@gmail.com": "ubmq pbrt ujqy orhf",
+    "kurokopotok@gmail.com": "pxww ewut uffz ufpu",
+    "kalievutub@gmail.com": "jlwb otxo mppi jvdh",
+    "snosakka07@gmail.com": "yiro khva gafc lujr",
+    "prosega211@gmail.com": "fnrz rkrp nrwy yaig",
+    "qwaerlarp@gmail.com": "zrzx siyf ukvm ctjp",
+    "segatel093@gmail.com": "fsma qetz gvmp pqrm",
+    "irina15815123@gmail.com": "fmre mxne ncaw gnke",
+    "disgeugh482@gmail.com": "ufet dwko fadg crax",
+    "germanalexandrovich12345678@gmail.com": "tsln hvmz mipp kmwh",
+    "bl89222099674@gmail.com": "yjru yftj zihu nyrz",
+    "psega0892@gmail.com": "vhrr hiso npgm xnoi",
+    "noakk1843@gmail.com": "mvqo rfrv cjht vppo",
+    "mak091ov@gmail.com": "hhli muyx nqju wlkk",
+    "ilya228smirn0@gmail.com": "faex guxl rlsx tvyc",
+    "demidivivan548@gmail.com": "izky pqsm xmxk vgod",
+    "zedrenskijvitalij@gmail.com": "javb kkcu znxe ykdj",
+    "tatanamorinskaa@gmail.com": "cjig kaxt tijl ndre",
+    "ivanplutalov543@gmail.com": "xsvm ewki dhfz qqkh",
+    "editt1345@gmail.com": "hezf xuel hzvz jzur",
+    "dlatt7055@gmail.com": "tpzd nxle odaw uqwf",
+    "dlyabravla655@gmail.com": "kprn ihvr bgia vdys",
+    "allisonikse1922@gmail.com": "tozo xrzu qndn mwuq"
 }
 
+# Список получателей
 receivers = [
-    'sms@telegram.org', 'dmca@telegram.org', 'abuse@telegram.org', 'sticker@telegram.org', 'support@telegram.org', 'support@telegram.org', 'dmca@telegram.org', 'security@telegram.org', 'sms@telegram.org', 'info@telegram.org', 'marta@telegram.org', 'spam@telegram.org', 'alex@telegram.org', 'abuse@telegram.org', 'pavel@telegram.org', 'durov@telegram.org', 'elies@telegram.org', 'ceo@telegram.org', 'mr@telegram.org', 'levlam@telegram.org', 'perekopsky@telegram.org', 'recover@telegram.org', 'germany@telegram.org', 'hyman@telegram.org', 'qa@telegram.org', 'Stickers@telegram.org', 'ir@telegram.org', 'vadim@telegram.org', 'shyam@telegram.org', 'stopca@telegram.org', '>support@telegram.org', 'ask@telegram.org', '125support@telegram.org', 'me@telegram.org', 'enquiries@telegram.org', 'api_support@telegram.org', 'marketing@telegram.org', 'ca@telegram.org', 'recovery@telegram.org', 'http@telegram.org', 'corp@telegram.org', 'corona@telegram.org', 'ton@telegram.org', 'sticker@telegram.org'
+    'sms@telegram.org', 'dmca@telegram.org', 'abuse@telegram.org', 
+    'sticker@telegram.org', 'support@telegram.org', 'security@telegram.org', 
+    'info@telegram.org', 'marta@telegram.org', 'spam@telegram.org', 
+    'alex@telegram.org', 'pavel@telegram.org', 'durov@telegram.org', 
+    'elies@telegram.org', 'ceo@telegram.org', 'mr@telegram.org', 
+    'levlam@telegram.org', 'perekopsky@telegram.org', 'recover@telegram.org', 
+    'germany@telegram.org', 'hyman@telegram.org', 'qa@telegram.org', 
+    'Stickers@telegram.org', 'ir@telegram.org', 'vadim@telegram.org', 
+    'shyam@telegram.org', 'stopca@telegram.org', 'ask@telegram.org', 
+    '125support@telegram.org', 'me@telegram.org', 'enquiries@telegram.org', 
+    'api_support@telegram.org', 'marketing@telegram.org', 'ca@telegram.org', 
+    'recovery@telegram.org', 'http@telegram.org', 'corp@telegram.org', 
+    'corona@telegram.org', 'ton@telegram.org'
 ]
 
-
-
+# SMTP серверы для разных доменов
 smtp_servers = {
     "gmail.com": ("smtp.gmail.com", 587),
     "yandex.ru": ("smtp.yandex.ru", 465),
@@ -89,4 +114,3 @@ smtp_servers = {
     "fakemail.net": ("smtp.fakemail.net", 587),
     "sharklasers.com": ("smtp.sharklasers.com", 587)
 }
-
