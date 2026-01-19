@@ -33,10 +33,28 @@ from telethon.tl.functions.channels import JoinChannelRequest
 from datetime import datetime, timedelta
 import re
 
+# ДОБАВЬТЕ ЭТОТ БЛОК СРАЗУ ПОСЛЕ ИМПОРТОВ:
+# =============================================
+# Определяем путь к папке Session для Docker
+if os.path.exists('/app'):
+    # Мы в Docker контейнере на Render
+    script_dir = '/app'
+else:
+    # Локальная разработка
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+session_dir = os.path.join(script_dir, 'Session')
+if not os.path.exists(session_dir):
+    os.makedirs(session_dir)
+# =============================================
+
+# Далее продолжается ваш существующий код:
 from config import api_id, api_hash, bot_token, admin_chat_ids, CRYPTO_PAY_TOKEN, senders, receivers, smtp_servers
 from proxies import proxies
 from user_agents import user_agents
 from emails import mail, phone_numbers
+
+# ... остальной ваш код без изменений ...
 
 class InputReportReasonThreats:
     def __init__(self):
