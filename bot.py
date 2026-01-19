@@ -115,10 +115,6 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-session_dir = os.path.join(script_dir, 'Session')
-if not os.path.exists(session_dir):
-    os.makedirs(session_dir)
 # для прыватных чтобы нельза было снести 
 private_users = {
     "ids": ['6774068650'],  # тут id
